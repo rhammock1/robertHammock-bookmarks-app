@@ -12,12 +12,13 @@ const findById = function(id) {
 
 const addBookmark = function(bookmark) {
   console.log(bookmark);
-  this.STORE.bookmarks.push(bookmark);
+  this.STORE.bookmarks.unshift(bookmark);
   
 };
 
 const findAndUpdate = function(id, newData) {
-  let currentItem = this.findById(id);
+  const currentItem = this.findById(id);
+  console.log('line21',currentItem);
   console.log('line22',newData);
   Object.assign(currentItem, newData);
   console.log('line23', currentItem)
@@ -50,6 +51,10 @@ const toggleFilter = function(value) {
   this.STORE.filter = value;
 };
 
+const toggleAdding = function() {
+  this.STORE.adding = !this.STORE.adding;
+}
+
 const setError = function(error) {
   this.STORE.error = error;
 };
@@ -60,9 +65,9 @@ const setError = function(error) {
    addBookmark,
    findAndUpdate,
    findAndDelete,
+   toggleAdding,
    toggleExpanded,
    toggleFilter,
    toggleEdit,
    setError
-  //  getRating
  }
