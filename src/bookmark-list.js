@@ -2,35 +2,72 @@ import $ from 'jquery';
 import api from './api';
 import store from './store';
 
-const generateBookmarkElement = function(bookmark, id) {
+const generateBookmarkElement = function(bookmark) {
   //template if statement to togggle expanded
+  if(bookmark.rating >= store.STORE.filter) {
+  let ratingStar = '<div class="rating rating-wrapper">';
   let bookmarkTitle = `
-  <ul class="js-bookmarks-list bookmarks-list">
-      <li class="js-list-item list-item" data-item-id='${bookmark.id}'>${bookmark.title}<div class='js-rating '>
-        <img class='rating-icon star1'src="https://img.icons8.com/metro/26/000000/star.png" alt="star-rating1">
-        <img class='rating-icon star2'src="https://img.icons8.com/metro/26/000000/star.png" alt="star-rating2">
-        <img class='rating-icon star3'src="https://img.icons8.com/metro/26/000000/star.png" alt="star-rating3">
-        <img class='rating-icon star4'src="https://img.icons8.com/metro/26/000000/star.png" alt="star-rating4">
-        <img class='rating-icon star5'src="https://img.icons8.com/metro/26/000000/star.png" alt="star-rating5">
+    <li class="js-list-item list-item" data-item-id='${bookmark.id}'><h2 id='title'>${bookmark.title}</h2>`
+
+  for(let i = 0; i< bookmark.rating; i++) {
+    
+    ratingStar += `<input class='star collapsed' type="radio" id="star" name="rating" value=""/><label for="star" title="rating" collapsed>rating</label>`;
+    
+  }
+     
+  let buttons = `<div class='button-wrapper'><div class='edit-delete'><input type='image' src="https://img.icons8.com/fluent-systems-filled/24/000000/edit.png" class='edit-button js-edit-button' alt='edit button'/>
+      <input type='image' src="https://img.icons8.com/ios-glyphs/24/000000/delete.png" class='delete-button js-delete-button' alt='delete button'/></div>`;
+
+  bookmarkTitle += buttons;
+  bookmarkTitle += ratingStar + '</div>';
+
+  let expandDown = `<input type='image' class='expandDown'src="https://img.icons8.com/metro/26/000000/expand-arrow.png"></div>`;
+
+  bookmarkTitle += expandDown;
+
+  if(bookmark.edit) {
+    buttons = `<input type='image' src="https://img.icons8.com/metro/26/000000/checkmark.png" class='edit-button js-check-button'alt='checkmark to submit edit'/>`;
+    bookmarkTitle = `
+    <li class="js-list-item list-item" data-item-id='${bookmark.id}'><input type='text' name='title' value='${bookmark.title}' required>`;
+    let editView = 
+    `<div class="js-expanded-item expanded edit">
+    <form class='js-form' required>
+      <input type='text' name='url' value='${bookmark.url}'class='js-edit-link-entry edit-link' required>
+      <div class='js-new-rating rating'>
+        <input type="radio" id="star5" name="rating" value="5" required/><label for="star5" title="5 stars!">5 stars</label>
+        <input type="radio" id="star4" name="rating" value="4" required/><label for="star4" title="4 stars!">4 stars</label>
+        <input type="radio" id="star3" name="rating" value="3" required/><label for="star3" title="3 stars!">3 stars</label>
+        <input type="radio" id="star2" name="rating" value="2" required/><label for="star2" title="2 stars!">2 stars</label>
+        <input type="radio" id="star1" name="rating" value="1" required/><label for="star1" title="1 stars!">1 star</label>
       </div>
-      <input type='image' src="https://img.icons8.com/fluent-systems-filled/24/000000/edit.png" class='edit-button js-edit-button'/>
-      <input type='image' src="https://img.icons8.com/ios-glyphs/24/000000/delete.png" class='delete-button js-delete-button'/>`;
-  if(store.expanded && id === store.bookmarks.id) {
+          <input type='text' value='${bookmark.desc}' name='desc' class='js-new-entry-description' required>
+        </div>
+        </form>
+      `;
+      return `${bookmarkTitle}${editView}${buttons}</li>`;
+  }
+  if(bookmark.expanded) {
     let expandedView = `
         <div class="js-expanded-item expanded">
+          <form action='${bookmark.url}' target='_blank'>
           <button>Visit Site</button>
+          </form>
           <p>${bookmark.desc}</p>
         </div>
-      </li></ul>`;
+      </li>`;
       return `${bookmarkTitle}${expandedView}`;
   };
-  return `${bookmarkTitle}</li></ul>`;
+
+  return `${bookmarkTitle}</li>`;
+  }
 };
 
+
+
 const generateBookmarkString = function(bookmarksList) {
-  const bookmarks = bookmarksList.map((bookmark) =>
-    
-    generateBookmarkElement(bookmark));
+  const bookmarks = bookmarksList.map((bookmark) => 
+    generateBookmarkElement(bookmark)
+  ); 
   
   return bookmarks.join('');
 };
@@ -44,8 +81,8 @@ const generateError = function(message) {
 };
 
 const renderError = function() {
-  if(store.error) {
-    const el = generateError(store.error);
+  if(store.STORE.error) {
+    const el = generateError(store.STORE.error);
     $('.error-container').html(el);
     $('.error-container').removeClass('hidden');
   } else {
@@ -63,18 +100,18 @@ const handleCloseError = function() {
 
 const newBookmarkTemplate = function() {
   let newBookmarkPage = 
-  `<form id='js-form' name='js-form'>
+  `<form class='js-form' name='js-form'>
     <h2>Add new bookmark:</h2>
     <input type='text' name='url' class='js-new-link-entry' placeholder='url' required>
     <input type='text' name='title' class='js-new-entry-title' placeholder='New bookmark title' required>
-    <div class='js-new-rating '>
-      <input type='image' name='rating' class='rating-icon'src="https://img.icons8.com/metro/26/000000/star.png" alt="1" value='1'>
-      <input type='image' name='rating' class='rating-icon'src="https://img.icons8.com/metro/26/000000/star.png" alt="2" value='2'>
-      <input type='image' name='rating' class='rating-icon'src="https://img.icons8.com/metro/26/000000/star.png" alt="3" value='3'>
-      <input type='image' name='rating' class='rating-icon'src="https://img.icons8.com/metro/26/000000/star.png" alt="4"  value='4'>
-      <input type='image' name='rating' class='rating-icon'src="https://img.icons8.com/metro/26/000000/star.png" alt="5" value='5'>
+    <div class='js-new-rating rating'>
+      <input type="radio" id="star5" name="rating" value="5" required/><label for="star5" title="5 stars!">5 stars</label>
+      <input type="radio" id="star4" name="rating" value="4" required/><label for="star4" title="4 stars!">4 stars</label>
+      <input type="radio" id="star3" name="rating" value="3" required/><label for="star3" title="3 stars!">3 stars</label>
+      <input type="radio" id="star2" name="rating" value="2" required/><label for="star2" title="2 stars!">2 stars</label>
+      <input type="radio" id="star1" name="rating" value="1" required/><label for="star1" title="1 stars!">1 star</label>
     </div>
-    <input type='text' name='desc' class='js-new-entry-description' placeholder='description'>
+    <input type='text' name='desc' class='js-new-entry-description' placeholder='description' required>
     <div class='button-holder'>
       <button class='cancel-form'>Cancel</button>
       <button class='submit-form'>Submit</button>
@@ -82,39 +119,20 @@ const newBookmarkTemplate = function() {
     </form>`;
     return newBookmarkPage;
 };
-const changeBackgroundRating = function() {
-  let bookmarksList = [...store.bookmarks];
-  console.log(bookmarksList);
-  for(let i =0;i<bookmarksList.length; i++) {
-   let rating = bookmarksList[i].rating;
-   console.log(rating);
-   for(let j = 0;j<rating; j++) {
-     $('.rating-icon').addClass('rating');
-   }
-  }
-  //  let id = bookmarksList[i].id;
-  //  if(rating > 0) {
-  //    $('')
-
-  //use a loop to go through each input within div
-  //to equal result
-  //trying to have the number of stars lit up based on the rating
-   
-  
-}
 
 const render = function() {
   renderError();
-  let bookmarksList = [...store.bookmarks];
-  changeBackgroundRating();
+  
+  let bookmarksList = [...store.STORE.bookmarks];
+  console.log('BookMark List',bookmarksList);
 
   
-  if(store.adding) {
-    $('main').html(newBookmarkTemplate());
+  if(store.STORE.adding) {
+    $('ul').html(newBookmarkTemplate());
   } else {
     const bookmarkString = generateBookmarkString(bookmarksList);
   
-  $('main').html(bookmarkString);
+  $('ul').html(bookmarkString);
   }
   
    
@@ -123,14 +141,19 @@ const render = function() {
 const handleNewBookmark = function() {
   $('.buttons').on('click', '#new', function(event) {
     event.preventDefault();
-    store.adding = true;
+    store.STORE.adding = true;
     render();
   });
   
 };
 
 const handleFilterBy = function() {
-
+  $('#filter').on('change', event => {
+    event.preventDefault();
+    let filter = $(event.currentTarget).val();
+    store.toggleFilter(filter);
+    render();
+  });
 };
 
 const getIdFromElement = function(bookmark) {
@@ -138,16 +161,11 @@ const getIdFromElement = function(bookmark) {
 };
 
 const handleExpandedView = function() {
-  $('main').on('click', '.js-list-item', function(event) {
-    if(!store.expanded) {
-      store.expanded = true;
-    } else {
-      store.expanded = false;
-    };
+  $('main').on('click', '.expandDown', function(event) {
+    
     let id = getIdFromElement(event.currentTarget)
-    console.log(id);
-    console.log(event.currentTarget);
-    $(event.currentTarget)
+    let bookmark = store.findById(id);
+    store.toggleExpanded(id);
 
     render();
   });
@@ -166,52 +184,61 @@ const handleDeleteBookmark = function() {
   });
 };
 
-const handleEditBookmark = function() {
-  $('main').on('click', '.js-edit-button', event => {
-    console.log('edit button pressed');
-
-  })
+const handleEditBookmark = function() {  
+   $('main').on('click', '.js-edit-button', event => {
+    event.preventDefault();
+    let id = getIdFromElement(event.currentTarget)
+    store.toggleEdit(id);
+    render();
+   });
 };
 
-const handleStarRating = function() {
-  $('main').on('click', ".rating-icon", event => {
-      event.preventDefault();
-      let rating = $(event.currentTarget).val();
-      handleCreateBookmark(rating);
-      if(!$(event.currentTarget).hasClass('rating')) {
-        $(event.currentTarget).prevAll().addBack().addClass('rating');
-      } else {
-        $(event.currentTarget).nextAll().removeClass('rating');
-      }
+
+const handleCheckEdit = function() {
+  $('main').on('click', '.js-check-button', event => {
+    let id = getIdFromElement(event.currentTarget)
+    let bookmark = store.findById(id);
+    let rating = bookmark.rating;
+    // console.log(rating);
+    let params = $(event.currentTarget).serializeJson();
+    
+    console.log('line206',params);
+    
+    api.updateBookmark(id, params).then(() => {
+      console.log();
       
-
+      store.findAndUpdate(id, params);
+      store.toggleEdit(id);
+      render();
+    })
+    .catch((error) => {
+      store.setError(error.message);
+      renderError();
     });
-};
+  })
+
+}
 
 $.fn.extend({
-  serializeJson: function(rating) {
-    let newBookmark = $('#js-form');
-    console.log(newBookmark[0]);
+  serializeJson: function() {
+    let newBookmark = $('.js-form');
     const formData = new FormData(newBookmark[0]);
     const o = {};
     formData.forEach((val, name) => o[name] = val);
-    o.rating = rating;
-    console.log(o);
     return JSON.stringify(o);
   }
 });
 
-const handleCreateBookmark = function(rating) {
+const handleCreateBookmark = function() {
+  
   $('main').on('click', '.submit-form', event => {
     event.preventDefault();
-    
-    console.log('Line 168:', rating);
-    let params = $(event.target).serializeJson(rating);
-    console.log(params);
+    let rating = $('input[name="rating"]').val()
+    console.log(rating);
+    let params = $(event.target).serializeJson();
     api.createBookmark(params).then((newBookmark) => {
       store.addBookmark(newBookmark);
-      store.adding = false;
-      store.expanded = false;
+      store.STORE.adding = false;
       render();
     })
     .catch((error) => {
@@ -225,18 +252,14 @@ const handleCancelBookmark = function() {
   $('main').on('click', '.cancel-form', event => {
     event.preventDefault();
     if ($('input').hasClass('canceled')) {
-        store.adding = false;
+        store.STORE.adding = false;
         render();
       };
       $('input').val('');
       $('input').removeClass('rating');
       $('input').addClass('canceled');
-      
-      
 });
-}
-
-
+};
 
 const bindEventListeners = function() {
   handleNewBookmark();
@@ -244,9 +267,11 @@ const bindEventListeners = function() {
   handleCancelBookmark();
   handleCloseError();
   handleEditBookmark();
-  // handleExpandedView();
+  handleCheckEdit();
+  handleExpandedView();
   handleDeleteBookmark();
-  handleStarRating();
+  handleFilterBy();
+  
 };
 
 export default {

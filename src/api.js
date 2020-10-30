@@ -11,6 +11,7 @@ const listApiFetch = function(...args) {
           return Promise.reject(error);
         }
       }
+      
       return res.json();
     })
     .then(data => {
@@ -18,6 +19,7 @@ const listApiFetch = function(...args) {
         error.message = data.message;
         return Promise.reject(error);
       }
+      console.log(data);
       return data;
     });
 }
@@ -28,7 +30,6 @@ const getBookmarks = function() {
 }
 
 const createBookmark = function(params) {
-  console.log('i did get here');
   return listApiFetch(`${baseURL}/bookmarks`, {
     method: 'POST',
     headers: {
@@ -39,8 +40,16 @@ const createBookmark = function(params) {
 }
 
 const updateBookmark = function(id, updateData) {
-
-}
+  let newData = updateData;
+  console.log('line43',newData)
+  return listApiFetch(`${baseURL}/bookmarks/${id}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: newData
+  });
+};
 
 const deleteBookmark = function(id) {
   return listApiFetch(`${baseURL}/bookmarks/${id}`, {

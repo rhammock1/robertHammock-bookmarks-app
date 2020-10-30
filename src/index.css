@@ -3,37 +3,208 @@ body {
   padding:0px;
   height:100%;
   width:100%;
+  min-width:300px;
+  min-height:100vh;
   display:flex;
   flex-direction: column;
-  align-items:center;
+  justify-content:space-between;
+  background-image: url('https://media.istockphoto.com/vectors/books-seamless-pattern-vector-id470721440?k=6&m=470721440&s=612x612&w=0&h=OtHvCXQICZ0hXiJJT0tWYrwZznqYw_ncU307tQDrDUA=');
+  font-family: 'Roboto', sans-serif;
 }
+.big-container {
+  padding-top:10px;
+  width:80%;
+  margin-right:auto;
+  margin-left:auto;
+  margin-bottom:10px;
+  background-color: #DD7230;
+  border: 5px solid #9EBD6E;
+  border-radius: 15px;
+  box-shadow:2px 5px #2F3E46;
+}
+
 .hidden {
   display:none;
 }
 h1 {
   font-size:45px;
   text-align:center;
+  margin:10px
 }
-.buttons {
+h1, h2 {
+  font-family: 'Grandstander', cursive;
+}
+button,#filter {
   width:auto;
   height:auto;
-
+  padding:3px 18px;
+  font-size:16px;
+  color: white;
+  background-color: #854D27;
+  border-radius: 5px;
+  border:2px solid #2F3E46;
 }
-.container {
-  width:75%;
-  height:100%;
-  border:10px solid black;
-  border-radius:5px;
+.cancel-form, .submit-form {
+  margin-top:10px;
+}
+
+.buttons {
+  width:100%;
+  margin-left:auto;
+  margin-right: auto;
+  height:auto;
+  display:flex;
+  justify-content:space-evenly;
+  font-size:16px;
+  
+  
+}
+.bookmarks-list {
+  display:flex;
+  flex-direction:column;
+  margin-right:auto;
+  margin-left:auto;
+  padding-left:0px;
+  justify-self:start;
+  align-content: center;
+  
+}
+
+.list-item {
+  background-color: #fafaee;
+  border: 5px solid #9EBD6E;
+  border-radius: 15px;
+  box-shadow:2px 5px #2F3E46;
+  list-style:none;
+  margin:15px auto;
+  padding:0 0px 0px 5px;
+  width:95%;
+  align-self:center;
+}
+form {
   display:flex;
   flex-direction:column;
   align-items:center;
 }
-div {
-  border:2px solid black;
+
+main {
+  margin-left:auto;
+  margin-right:auto;
+  display:flex;
+  flex-direction:column;
+  
+  width:100%;
 }
-.rating {
+.expanded {
+  margin-top:10px;
+}
+
+/* .edit-button, .delete-button, .expandDown{
+  height:50%;
+  width:auto;
+} */
+.expandDown {
+  width:auto;
+  height:50%;
+  
+}
+.button-wrapper {
+  width:100%;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+}
+.rating-wrapper {
+  width:auto;
+  height:auto;
+  display:flex;
+  justify-content:center;
+}
+/* .rating {
+  border-radius: 5px;;
   background-color:yellow;
+} */
+footer {
+  margin-top:5px;
+  width:100%;
+  height:auto;
+  text-align:center;
+  padding:10px 0px;
+  border-top: 5px solid #9EBD6E;
 }
-/* .rating-icon {
-  background-color:white;
+header {
+  width:100%;
+  height:100%;
+  /* padding:10px 0px; */
+  margin-top:0px;
+  margin-bottom:10px;
+  text-align:center;
+  border-bottom: 5px solid #9EBD6E;
+}
+header, footer {
+  background-color: #969BAE;
+}
+.rating-wrapper:not(:checked) > label:before {
+  color:gold;
+}
+/* Experiment below */
+.rating {
+    float:left;
+}
+
+/* :not(:checked) is a filter, so that browsers that don’t support :checked don’t 
+   follow these rules. Every browser that supports :checked also supports :not(), so
+   it doesn’t make the test unnecessarily selective */
+.rating:not(:checked) > input {
+    position:absolute;
+    top:-9999px;
+    clip:rect(0,0,0,0);
+}
+
+.rating:not(:checked) > label {
+    float:right;
+    width:.88em;
+    
+    overflow:hidden;
+    white-space:nowrap;
+    cursor:pointer;
+    font-size:200%;
+    line-height:1.2;
+    color:#ddd;
+    text-shadow:1px 1px #bbb, 2px 2px #666, .1em .1em .2em rgba(0,0,0,.5);
+}
+
+.rating:not(:checked) > label:before {
+    content: '★ ';
+    
+}
+
+.rating > input:checked ~ label {
+    color: gold;
+    text-shadow:1px 1px gold, 2px 2px #940, .1em .1em .2em rgba(0,0,0,.5);
+}
+
+.rating:not(:checked) > label:hover,
+.rating:not(:checked) > label:hover ~ label {
+    color: gold;
+    text-shadow:1px 1px gold, 2px 2px #940, .1em .1em .2em rgba(0,0,0,.5);
+}
+
+.rating > input:checked + label:hover,
+.rating > input:checked + label:hover ~ label,
+.rating > input:checked ~ label:hover,
+.rating > input:checked ~ label:hover ~ label,
+.rating > label:hover ~ input:checked ~ label {
+    color: gold;
+    text-shadow:1px 1px gold, 2px 2px #B57340, .1em .1em .2em rgba(0,0,0,.5);
+}
+
+.rating > label:active {
+    position:relative;
+    top:2px;
+    left:2px;
+  
+}
+/* .rating > label {
+  color:yellow;
 } */

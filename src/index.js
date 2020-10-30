@@ -13,11 +13,11 @@ const startUp = function() {
 //main api fetch then render
   api.getBookmarks()
   .then((bookmarks) => {
+    // let expanded = false;
     bookmarks.forEach((bookmark) => store.addBookmark(bookmark));
     bookmarkList.render();
   });
-  //will hold binded event listeners
-  //main render function
+
   bookmarkList.render();
   bookmarkList.bindEventListeners();
   

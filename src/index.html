@@ -3,27 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Grandstander&family=Roboto&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./index.css" type='stylesheet'>
   <title>Bookmarks App</title>
 </head>
 <body>
   <header>
-    <h1>My Bookmarks</h1>
+    <h1>Your Bookmarks, Chief</h1>
   </header>
+  <div class='big-container'>
   <div class="error-container hidden"></div>
   <div class="buttons">
     <button id='new'>New</button>
-    <select id='filter' name='Filter-By'>
-      <option value=''>Filter by stars</option>
-      <option value='1'>1 stars</option>
-      <option value='2'>2 stars</option>
-      <option value='3'>3 stars</option>
-      <option value='4'>4 stars</option>
-      <option value='5'>5 stars</option>
-    </select>
+    <label for='filter'>Filter:
+    <select id='filter' name='filter'>
+      <option class='value' value=''>All</option>
+      <option class='value' value='1'>1 stars</option>
+      <option class='value' value='2'>2 stars</option>
+      <option class='value' value='3'>3 stars</option>
+      <option class='value' value='4'>4 stars</option>
+      <option class='value' value='5'>5 stars</option>
+    </select></label>
   </div>
   <main>
+    <ul class="js-bookmarks-list bookmarks-list">
+      
+    </ul>
     
-  </main>
+  </main></div>
+  <footer>&#169; RHammock</footer>
 </body>
 </html>
