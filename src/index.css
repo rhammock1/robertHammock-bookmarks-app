@@ -24,7 +24,7 @@ body {
   margin-right:auto;
   margin-left:auto;
   margin-bottom:10px;
-  background-color: #DD7230;
+  background-color: #969BAE;
   border: 5px solid #9EBD6E;
   border-radius: 15px;
   box-shadow:2px 5px #2F3E46;
@@ -88,12 +88,33 @@ button,#filter {
   width:95%;
   align-self:center;
 }
-form {
+.expanded {
   display:flex;
   flex-direction:column;
   align-items:center;
-}
+  justify-content:space-between;
+  width:auto;
+  height:100%;
+  margin-top:10px;
 
+}
+form {
+  display:flex;
+  flex-direction:column;
+  justify-content:space-around;
+  align-items:center;
+  width:auto;
+  margin:auto;
+}
+.newPage {
+  width:75% !important;
+}
+fieldset {
+  width:auto;
+}
+input[type='text'] {
+  width:auto;
+}
 main {
   margin-left:auto;
   margin-right:auto;
@@ -102,9 +123,7 @@ main {
   
   width:100%;
 }
-.expanded {
-  margin-top:10px;
-}
+
 .expandDown {
   width:auto;
   height:50%;
@@ -143,11 +162,15 @@ header, footer {
   background-color: #969BAE;
 }
 .rating-wrapper:not(:checked) > label:before {
-  color:gold;
+  color:black;
+}
+fieldset {
+  text-align:center;
 }
 /* Experiment below */
 .rating {
     float:left;
+
 }
 
 /* :not(:checked) is a filter, so that browsers that don’t support :checked don’t 
@@ -168,7 +191,7 @@ header, footer {
     cursor:pointer;
     font-size:200%;
     line-height:1.2;
-    color:#ddd;
+    color:black;
     text-shadow:1px 1px #bbb, 2px 2px #666, .1em .1em .2em rgba(0,0,0,.5);
 }
 
@@ -186,7 +209,7 @@ header, footer {
 .rating:not(:checked) > label:focus,
 .rating:not(:checked) > label:hover ~ label,
 .rating:not(:checked) > label:focus ~ label {
-    color: gold;
+    color: black;
     text-shadow:1px 1px gold, 2px 2px #940, .1em .1em .2em rgba(0,0,0,.5);
 }
 
@@ -231,6 +254,10 @@ header, footer {
     padding:auto;
     
   }
+  .newPage {
+  width:50% !important;
+  margin:15px;
+}
   .edit-delete {
     width:15%;
   }

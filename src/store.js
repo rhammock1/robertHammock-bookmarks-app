@@ -18,8 +18,8 @@ const addBookmark = function(bookmark) {
 
 const findAndUpdate = function(id, newData) {
   const currentItem = this.findById(id);
-  console.log('line21',currentItem);
-  console.log('line22',newData);
+  // console.log('line21',currentItem);
+  // console.log('line22',newData);
   Object.assign(currentItem, newData);
   console.log('line23', currentItem)
   
